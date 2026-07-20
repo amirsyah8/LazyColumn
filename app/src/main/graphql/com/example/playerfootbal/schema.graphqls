@@ -1,0 +1,11 @@
+type Query {
+  getDataPlayer: [Player]
+}
+
+type Player {
+  id: ID!
+  name: String!
+  age: Int!
+  description: String!
+  playerImageId: String!
+}

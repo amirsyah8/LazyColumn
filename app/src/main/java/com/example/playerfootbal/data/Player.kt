@@ -1,9 +1,9 @@
 package com.example.playerfootbal.data
 
 data class Player(
-    val id : Int,
+    val id : String,
     val name: String,
     val age : Int,
     val description : String,
-    val playerImageId : Int = 0,
+    val playerImageId : String = "",
 )

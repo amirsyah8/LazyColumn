@@ -1,6 +1,5 @@
 package com.example.playerfootbal
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,9 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.playerfootbal.data.Player
 
 @Composable
@@ -58,8 +57,8 @@ fun PlayerListItem(player: Player) {
 
 @Composable
 fun PlayerImage(player: Player) {
-    Image(
-        painter = painterResource(id = player.playerImageId),
+    AsyncImage(
+        model = "http://10.0.2.2:3002/${player.playerImageId}",
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier

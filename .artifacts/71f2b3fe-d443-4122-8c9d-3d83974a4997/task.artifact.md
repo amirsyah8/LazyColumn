@@ -1,5 +1,17 @@
-- `[x]` Fix theme and Scaffold padding in `MainActivity.kt`
-- `[x]` Fix imports and LazyColumn padding in `HomeContent.kt`
-- `[x]` Fix Material 3 typography and invalid imports in `PlayerListItem.kt`
-- `[x]` Update `compileSdk` and `targetSdk` to 37 in `build.gradle.kts`
-- `[x]` Verify build
+- `[x]` Configure dependencies and plugins
+    - `[x]` Update `libs.versions.toml`
+    - `[x]` Update `app/build.gradle.kts`
+    - `[x]` Update `AndroidManifest.xml`
+    - `[x]` Fix Gradle plugin conflict via `gradle.properties`
+- `[x]` Set up Apollo GraphQL
+    - `[x]` Create `schema.graphqls`
+    - `[x]` Create `GetDataPlayer.graphql`
+    - `[x]` Create `Apollo.kt` client
+- `[x]` Update Data and UI
+    - `[x]` Modify `Player.kt`
+    - `[x]` Update `PlayerListItem.kt` to use Apollo models and Coil
+    - `[x]` Update `HomeContent.kt` for data fetching
+    - `[x]` Delete `DataProvider.kt`
+- `[x]` Verification
+    - `[x]` Sync and Build
+    - `[x]` Manual verification

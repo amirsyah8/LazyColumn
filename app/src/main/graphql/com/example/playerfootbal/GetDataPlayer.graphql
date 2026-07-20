@@ -1,0 +1,9 @@
+query GetDataPlayer {
+    getDataPlayer {
+        age
+        description
+        id
+        name
+        playerImageId
+    }
+}

@@ -1,28 +1,27 @@
-# Walkthrough - Pembaikan Kod Player Football
+# Walkthrough - Migrasi ke GraphQL dengan Apollo Kotlin 4
 
-Saya telah membaiki masalah dalam kod anda yang menghalang aplikasi daripada berfungsi dan dikompil.
+Saya telah berjaya mengubah aplikasi Player Football untuk mengambil data daripada backend NestJS menggunakan GraphQL dan memaparkan imej menggunakan Coil.
 
 ## Perubahan Utama
 
-### 1. [MainActivity.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/MainActivity.kt)
-- Membetulkan nama tema daripada `PlayerUnitedTheme` kepada `PlayerFootbalTheme`.
-- Menggunakan `PaddingValues` daripada `Scaffold` untuk memastikan kandungan tidak bertindih dengan elemen sistem (edge-to-edge).
+### 1. Konfigurasi Gradle & Penyelesaian Konflik
+- **Penyelesaian Konflik**: Mengatasi konflik antara `org.jetbrains.kotlin.android` dan sistem binaan baru AGP 9.3 dengan menambah `android.builtInKotlin=false` dalam `gradle.properties`.
+- **Apollo 4**: Menambah plugin dan runtime Apollo Kotlin 4.
+- **Coil**: Menambah perpustakaan Coil untuk pemuatan imej secara asinkronus daripada URL.
+- **JVM Target**: Menyelaraskan target JVM ke versi 11 untuk mengelakkan ralat kompilasi.
 
-### 2. [HomeContent.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/HomeContent.kt)
-- Menambah parameter `PaddingValues`.
-- Membetulkan ralat import untuk fungsi `items` dalam `LazyColumn`.
-- Membetulkan panggilan parameter `PlayerListItem` yang sebelum ini salah (`players = it` ditukar kepada `player = it`).
+### 2. Lapisan Data (GraphQL)
+- **Skema & Query**: Fail `schema.graphqls` dan `GetDataPlayer.graphql` telah dicipta dalam `src/main/graphql` untuk membolehkan penjanaan kod type-safe oleh Apollo.
+- **Apollo Client**: Mencipta `apolloClient` singleton yang menghala ke `http://10.0.2.2:3002/graphql` (alamat khas untuk emulator Android mengakses localhost).
+- **Model Data**: Mengemaskini kelas `Player` untuk menyokong `playerImageId` sebagai `String`.
 
-### 3. [PlayerListItem.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/PlayerListItem.kt)
-- Membuang import `ads_mobile_sdk.h6` yang tidak sah.
-- Mengemaskini gaya teks ke Material 3 (`titleLarge` dan `bodyMedium`).
-- Menggunakan data deskripsi sebenar daripada objek `Player`.
-- Menambah komponen `Card` dengan `RoundedCornerShape`.
-- **Penambahbaikan Imej**: Saiz imej ditingkatkan ke **110.dp** dengan penjajaran tengah (`CenterVertically`) dan `TextOverflow.Ellipsis` untuk teks yang panjang.
-
-### 4. [build.gradle.kts](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/build.gradle.kts)
-- Mengemaskini `compileSdk` dan `targetSdk` kepada 37 untuk menyokong versi perpustakaan AndroidX yang terkini.
+### 3. Kemas Kini UI
+- **HomeContent.kt**: Kini menggunakan `LaunchedEffect` untuk memanggil query GraphQL secara asinkronus dan memaparkan `CircularProgressIndicator` semasa memuatkan data.
+- **PlayerListItem.kt**: Menggunakan `AsyncImage` daripada Coil untuk memaparkan imej pemain secara terus daripada backend URL.
 
 ## Pengesahan
-- Projek telah berjaya dikompil menggunakan perintah `./gradlew assembleDebug`.
-- Semua ralat sintaks yang dikesan sebelum ini telah diselesaikan.
+- Projek telah berjaya disegerakkan (sync) dan dibina (build) dengan perintah `./gradlew assembleDebug`.
+- Struktur folder GraphQL telah disusun mengikut amalan terbaik Apollo 4.
+
+> [!TIP]
+> Pastikan backend NestJS anda sedang berjalan di `http://localhost:3002/graphql` sebelum menjalankan aplikasi pada emulator.
