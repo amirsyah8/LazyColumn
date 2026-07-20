@@ -1,0 +1,5 @@
+- `[x]` Fix theme and Scaffold padding in `MainActivity.kt`
+- `[x]` Fix imports and LazyColumn padding in `HomeContent.kt`
+- `[x]` Fix Material 3 typography and invalid imports in `PlayerListItem.kt`
+- `[x]` Update `compileSdk` and `targetSdk` to 37 in `build.gradle.kts`
+- `[x]` Verify build
