@@ -1,61 +1,37 @@
-# Implementation Plan - Migrate to GraphQL using Apollo Kotlin
+# Implementation Plan - Fix Build Warnings and Deprecations
 
-Migrate the Player Football app to fetch data from a NestJS GraphQL backend using **Apollo Kotlin** instead of local static data.
-
-## User Review Required
-
-> [!IMPORTANT]
-> **Network Address**: In Android Emulators, `localhost` refers to the device itself. To access your computer's `localhost`, you must use `10.0.2.2`.
->
-> **Image Loading**: I will integrate **Coil** to handle loading images from URLs.
->
-> **Apollo Plugin**: This requires adding the Apollo Kotlin Gradle plugin, which will generate type-safe models from your GraphQL query.
+Clean up the project by updating dependency versions and migrating deprecated Gradle DSLs to resolve the warnings shown in the IDE.
 
 ## Proposed Changes
 
-### [Component Name] Build Configuration
+### [Component Name] Dependency Updates
 
 #### [MODIFY] [libs.versions.toml](file:///home/amirshah/AndroidStudioProjects/playerfootbal/gradle/libs.versions.toml)
-- Add version for Apollo Kotlin and Coil.
-- Define library aliases and plugin alias for Apollo.
+- Update `kotlin` to `2.1.10` (or `2.4.10` as suggested, but let's check stable). Actually, I will use the versions suggested in the image:
+  - `kotlin = "2.4.10"`
+  - `composeBom = "2026.06.01"`
+  - `adsMobileSdk = "1.3.0"`
+  - `apollo = "5.0.1"`
+  - `coil = "2.7.0"`
+
+### [Component Name] Gradle Configuration
 
 #### [MODIFY] [build.gradle.kts](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/build.gradle.kts)
-- Add Apollo Kotlin plugin.
-- Configure Apollo service (schema location, package name).
-- Add dependencies for Apollo and Coil.
+- Migrate `kotlinOptions { jvmTarget = "11" }` to:
+  ```kotlin
+  compilerOptions {
+      jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+  }
+  ```
+- Address the `Project.android` deprecation if applicable (usually by ensuring proper imports or DSL usage).
 
-#### [MODIFY] [AndroidManifest.xml](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/AndroidManifest.xml)
-- Add `android.permission.INTERNET`.
-- Add `android:usesCleartextTraffic="true"` to support non-HTTPS local backend.
-
-### [Component Name] Data Layer
-
-#### [NEW] [player.graphql](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/graphql/player.graphql)
-- Define the `GetDataPlayer` query.
-
-#### [NEW] [Apollo.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/data/Apollo.kt)
-- Singleton to provide the `ApolloClient` instance pointing to `http://10.0.2.2:3002/graphql`.
-
-#### [DELETE] [DataProvider.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/data/DataProvider.kt)
-- Remove the local static data source.
-
-### [Component Name] UI Layer
+### [Component Name] Code Cleanup
 
 #### [MODIFY] [PlayerListItem.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/PlayerListItem.kt)
-- Update to accept the generated Apollo `GetDataPlayerQuery.GetDataPlayer` model.
-- Update `PlayerImage` to use Coil's `AsyncImage` with the base URL.
-
-#### [MODIFY] [HomeContent.kt](file:///home/amirshah/AndroidStudioProjects/playerfootbal/app/src/main/java/com/example/playerfootbal/HomeContent.kt)
-- Fetch data using `apolloClient.query(GetDataPlayerQuery()).execute()`.
-- Handle loading, success, and error states using Compose `State`.
+- Remove unused `import com.example.playerfootbal.BuildConfig` or other unused imports if they are flagged. (Actually, `BuildConfig` IS used, so I need to check which one is unused. The image shows line 21, let's verify).
 
 ## Verification Plan
 
 ### Automated Tests
-- Run `./gradlew generateApolloSources` to verify GraphQL code generation.
-- Run `./gradlew assembleDebug` to verify compilation.
-
-### Manual Verification
-- Deploy to emulator.
-- Verify that the list is populated from the backend.
-- Verify images load correctly from the URL.
+- Run `./gradlew assembleDebug` to ensure everything still builds with new versions.
+- Verify that the warnings in the "Problems" tab are reduced/gone.

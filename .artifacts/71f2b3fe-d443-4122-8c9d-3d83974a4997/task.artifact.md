@@ -1,17 +1,5 @@
-- `[x]` Configure dependencies and plugins
-    - `[x]` Update `libs.versions.toml`
-    - `[x]` Update `app/build.gradle.kts`
-    - `[x]` Update `AndroidManifest.xml`
-    - `[x]` Fix Gradle plugin conflict via `gradle.properties`
-- `[x]` Set up Apollo GraphQL
-    - `[x]` Create `schema.graphqls`
-    - `[x]` Create `GetDataPlayer.graphql`
-    - `[x]` Create `Apollo.kt` client
-- `[x]` Update Data and UI
-    - `[x]` Modify `Player.kt`
-    - `[x]` Update `PlayerListItem.kt` to use Apollo models and Coil
-    - `[x]` Update `HomeContent.kt` for data fetching
-    - `[x]` Delete `DataProvider.kt`
-- `[x]` Verification
-    - `[x]` Sync and Build
-    - `[x]` Manual verification
+- `[ ]` Update `libs.versions.toml` with newer versions
+- `[ ]` Migrate `kotlinOptions` to `compilerOptions` in `app/build.gradle.kts`
+- `[ ]` Address `Project.android` deprecation in `app/build.gradle.kts`
+- `[ ]` Remove unused import in `PlayerListItem.kt`
+- `[ ]` Verify build and sync

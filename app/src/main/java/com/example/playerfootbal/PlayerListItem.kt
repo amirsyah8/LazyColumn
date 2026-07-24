@@ -58,7 +58,7 @@ fun PlayerListItem(player: Player) {
 @Composable
 fun PlayerImage(player: Player) {
     AsyncImage(
-        model = "http://10.0.2.2:3002/${player.playerImageId}",
+        model = "${BuildConfig.API_URL}/${player.playerImageId}",
         contentDescription = null,
         contentScale = ContentScale.Crop,
         modifier = Modifier

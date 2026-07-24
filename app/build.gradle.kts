@@ -1,8 +1,19 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.apollo)
+}
+
+kotlin {
+    jvmToolchain(11)
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(localPropertiesFile.inputStream())
 }
 
 android {
@@ -17,6 +28,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        
+        val baseUrl = localProperties.getProperty("BASE_URL") ?: "\"http://10.0.2.2:3002/graphql\""
+        val apiUrl = localProperties.getProperty("API_URL") ?: "\"http://10.0.2.2:3002\""
+        
+        buildConfigField("String", "BASE_URL", baseUrl)
+        buildConfigField("String", "API_URL", apiUrl)
     }
 
     buildTypes {
@@ -30,11 +47,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -59,7 +74,6 @@ dependencies {
     implementation(libs.apollo.runtime)
     implementation(libs.coil.compose)
     testImplementation(libs.junit)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
